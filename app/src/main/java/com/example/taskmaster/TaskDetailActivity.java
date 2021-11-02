@@ -15,5 +15,8 @@ public class TaskDetailActivity extends AppCompatActivity {
         String getTask = getIntent().getStringExtra("task");
         TextView taskText = findViewById(R.id.textView7);
         taskText.setText(getTask);
+        String getTaskInfo = getIntent().getStringExtra("taskInfo");
+        TextView taskInfoText = findViewById(R.id.textView8);
+        taskInfoText.setText(getTaskInfo);
     }
 }

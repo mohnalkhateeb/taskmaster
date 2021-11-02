@@ -1,12 +1,13 @@
 package com.example.taskmaster;
 
+import androidx.annotation.NonNull;
+
 public class Task {
 
 
     String title;
     String body;
     String state;
-
 
     public Task(String title, String body, String state) {
         this.title = title;
@@ -37,6 +38,11 @@ public class Task {
 
     public String getBody() {
         return body;
+    }
+    @Override
+    @NonNull
+    public String toString() {
+        return String.format("TITLE: %s DESCRIPTION: %s STATE: %s", this.title, this.body, this.state);
     }
 
 }

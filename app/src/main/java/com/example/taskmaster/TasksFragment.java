@@ -1,5 +1,6 @@
 package com.example.taskmaster;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,11 +22,13 @@ public class TasksFragment extends Fragment {
     private static final String ARG_PARAM1 = "title";
     private static final String ARG_PARAM2 = "body";
     private static final String ARG_PARAM3 = "state";
+//    private static final String ARG_PARAM3 = "state";
 
     // TODO: Rename and change types of parameters
     private String mTitle ;
     private String mBody ;
     private String mState ;
+
 
     public TasksFragment() {
         // Required empty public constructor
@@ -36,7 +40,7 @@ public class TasksFragment extends Fragment {
      *
      * @param mTitle Parameter 1.
      * @param mBody Parameter 2.
-     * @param mState Parameter 2.
+     * @param mState Parameter 3.
      * @return A new instance of fragment TasksFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -57,6 +61,7 @@ public class TasksFragment extends Fragment {
             mTitle = getArguments().getString(ARG_PARAM1);
             mBody = getArguments().getString(ARG_PARAM2);
             mState = getArguments().getString(ARG_PARAM3);
+//            mState = getArguments().getString(ARG_PARAM3);
         }
     }
 

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recyclerView2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTintMode="screen"
     tools:context=".MainActivity">
 
     <Button
@@ -68,10 +69,12 @@
         android:layout_width="135dp"
         android:layout_height="39dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="371dp"
+        android:layout_marginTop="161dp"
+        android:layout_marginEnd="9dp"
         android:text="Task Three"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/task2"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView23" />
 
     <Button
         android:id="@+id/settings"
@@ -84,11 +87,18 @@
         app:layout_constraintTop_toBottomOf="@+id/task2" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="409dp"
-        android:layout_height="369dp"
+        android:id="@+id/recyclerView23"
+        android:layout_width="match_parent"
+        android:layout_height="209dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
+        android:scrollbarSize="1dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical"
+        android:soundEffectsEnabled="false"
+        android:transitionGroup="false"
+        android:verticalScrollbarPosition="defaultPosition"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />

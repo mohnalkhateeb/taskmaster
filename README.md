@@ -22,5 +22,17 @@
 ### Task detail
 ![taskdetail](app/screenshots/Screenshot_1635864539.png)
 
+# LAB 28
+* Added a list of tasks that has a scrollable feature.
+* For the scrollable feature a recycled view is used.
+* In the recycled view is a fragment with the tasks
+* The three hardcoded buttons were removed
+
+### Main Activity
+![Main](app/screenshots/main28.png)
+
+### Task detail
+![taskdetail](app/screenshots/taskDe28.png)
+
 
 

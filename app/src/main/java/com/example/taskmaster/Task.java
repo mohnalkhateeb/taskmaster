@@ -1,9 +1,14 @@
 package com.example.taskmaster;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class Task {
 
+    @PrimaryKey(autoGenerate = true)
+    private long id;
 
     String title;
     String body;
@@ -15,6 +20,13 @@ public class Task {
         this.state = state;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public void setTitle(String title) {
         this.title = title;

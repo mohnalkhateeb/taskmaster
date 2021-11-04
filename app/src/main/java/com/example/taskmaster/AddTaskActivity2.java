@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class AddTaskActivity2 extends AppCompatActivity {
 
@@ -29,9 +28,15 @@ public class AddTaskActivity2 extends AppCompatActivity {
                 String userInputText3 = userInput3.getText().toString();
 
                 Task newTask = new Task(userInputText, userInputText2, userInputText3 );
-                Long addedTaskID = AppDatabase.getInstance(getApplicationContext()).TaskDao().addTask(newTask);
+                Long addedTaskID = AppDataBase.getInstance(getApplicationContext()).TaskDao().addTask(newTask);
                 // TextView userItem = AddTasks.this.findViewById(R.id.textView2);
                 //userItem.setText("Submitted");
+
+                System.out.println(
+                        "++++++++++++++++++++++++++++++++++++++++++++++++++" +
+                                " Student ID : " + addedTaskID
+                                +
+                                "++++++++++++++++++++++++++++++++++++++++++++++++++");
                 Intent sentToAddTasksIntent = new Intent(AddTaskActivity2.this, MainActivity.class);
 
                 AddTaskActivity2.this.startActivity(sentToAddTasksIntent);

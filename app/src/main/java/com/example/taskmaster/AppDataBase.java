@@ -7,19 +7,19 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 @Database(entities = {Task.class}, version = 1)
-abstract class AppDatabase extends RoomDatabase {
+public abstract class AppDataBase extends RoomDatabase {
     public abstract TaskDao TaskDao();
 
-    private static AppDatabase appDatabase; // declaration for the instance
+    private static AppDataBase appDatabase; // declaration for the instance
 
-    public AppDatabase() { // constructor implementation
+    public AppDataBase() { // constructor implementation
     }
 
-    public static synchronized AppDatabase  getInstance(Context context) { // method returns the instance
+    public static synchronized AppDataBase getInstance(Context context) { // method returns the instance
 
         if(appDatabase == null){
             appDatabase = Room.databaseBuilder(context,
-                    AppDatabase.class, "AppDatabase").allowMainThreadQueries().build();
+                    AppDataBase.class, "AppDataBase").allowMainThreadQueries().build();
         }
 
         return appDatabase;

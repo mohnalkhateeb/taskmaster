@@ -3,6 +3,7 @@ package com.example.taskmaster;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.renderRecyclerViewFromDatabase();
         Button button1 = findViewById(R.id.button);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
 
         textView.setVisibility(View.VISIBLE);
 
-
+        this.renderRecyclerViewFromDatabase();
     }
     @Override
     public void onTaskSelected(Task task) {
@@ -147,5 +150,19 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         taskDetailsIntent.putExtra("task", task.getTitle());
         taskDetailsIntent.putExtra("taskInfo", task.getBody()+" "+task.getState());
         MainActivity.this.startActivity(taskDetailsIntent);
+    }
+    private void renderRecyclerViewFromDatabase() {
+        // Build the database and instantiate the List that hold the tasks from database
+        this.tasks = new LinkedList<>();
+
+        // Get everything from database and put in list of tasks to be rendered by recycler view
+        this.tasks.addAll(AppDataBase.getInstance(getApplicationContext()).TaskDao().getAll());
+
+        // Re android doc: https://developer.android.com/guide/topics/ui/layout/recyclerview
+        // Render Task items to the screen with RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.recyclerView23);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Define Adapter class that is able to communicate with RecyclerView
+        recyclerView.setAdapter(new TasksRecyclerViewAdapter(this.tasks, this));
     }
 }

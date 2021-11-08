@@ -36,11 +36,21 @@
 
 # LAB29 -
 
-Added a database using room
-Users can now save tasks
-Users saved tasks will be displayed in the recycled view, feature working correct
+* Added a database using room
+* Users can now save tasks
+* Users saved tasks will be displayed in the recycled view, feature working correct
 #### Main Activity
 ![database](app/screenshots/database.png)
+
+# LAB31 -
+
+* Added Test to main activaty 
+* fixed all task pages 
+#### Main Activity
+![Test](app/screenshots/MainActivityTest.png)
+#### All Tasks
+![allTasks](app/screenshots/newAllTask.png)
+
 
 
 

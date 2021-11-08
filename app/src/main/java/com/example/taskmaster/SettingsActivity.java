@@ -2,6 +2,7 @@ package com.example.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,7 +32,8 @@ public class SettingsActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = username.edit();
                 editor.putString("username", userInputText);
                 editor.apply();
-
+                Intent sentToMain = new Intent(SettingsActivity.this, MainActivity.class);
+                SettingsActivity.this.startActivity(sentToMain);
 
 
             }

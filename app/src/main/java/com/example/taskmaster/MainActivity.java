@@ -1,76 +1,168 @@
 package com.example.taskmaster;
 
-import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import java.util.LinkedList;
+import java.util.List;
 
-import com.example.taskmaster.databinding.ActivityMainBinding;
+public class MainActivity extends AppCompatActivity implements TasksRecyclerViewAdapter.OnTaskSelectedListener{
 
-import android.view.Menu;
-import android.view.MenuItem;
-
-public class MainActivity extends AppCompatActivity {
-
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
-
+    private static final String TAG = "MainActivity";
+    private List<Task> tasks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        setSupportActionBar(binding.toolbar);
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        this.renderRecyclerViewFromDatabase();
+        Button button1 = findViewById(R.id.button);
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent1 = new Intent(MainActivity.this,AddTaskActivity2.class);
+                startActivity(intent1);
             }
         });
+
+        Button button2 = findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(MainActivity.this,AllTaskActivity2.class);
+                startActivity(intent2);
+            }
+        });
+
+
+        Button task1 = findViewById(R.id.task1);
+        task1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent sentToDetails = new Intent(MainActivity.this, TaskDetailActivity.class);
+                sentToDetails.putExtra("task", "Task One");
+                MainActivity.this.startActivity(sentToDetails);
+            }
+        });
+
+
+        Button task2 = findViewById(R.id.task2);
+        task2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent sentToDetails = new Intent(MainActivity.this, TaskDetailActivity.class);
+                sentToDetails.putExtra("task", "Task Two");
+                MainActivity.this.startActivity(sentToDetails);
+            }
+        });
+
+
+
+
+
+        Button task3 = findViewById(R.id.task3);
+        task3.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent sentToDetails = new Intent(MainActivity.this, TaskDetailActivity.class);
+                sentToDetails.putExtra("task", "Task Three");
+                MainActivity.this.startActivity(sentToDetails);
+            }
+
+
+        });
+
+
+
+        Button settings = findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent sentToSettings = new Intent(MainActivity.this, SettingsActivity.class);
+                MainActivity.this.startActivity(sentToSettings);
+            }
+        });
+
+        Task taskA = new Task("Eating", "HUMMMM", "IN_PROGRESS");
+        Task taskB = new Task("Grade labs", "By 10:00pm", "NEW");
+        Task taskC = new Task("SLEEPING", "IN_DREAM", "ASSIGNED" );
+        this.tasks = new LinkedList<>();
+        this.tasks.add(taskA);
+        this.tasks.add(taskB);
+        this.tasks.add(taskC);
+        // Re: https://developer.android.com/guide/topics/ui/layout/recyclerview
+        // Render Task items to the screen with RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.recyclerView23);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Define Adapter class that is able to communicate with RecyclerView
+        recyclerView.setAdapter(new TasksRecyclerViewAdapter(this.tasks, (TasksRecyclerViewAdapter.OnTaskSelectedListener) this));
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        TextView textView = findViewById(R.id.textView1);
+
+
+        textView.setText("WELCOME");
+        textView.setVisibility(View.VISIBLE);
+
+
+
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void onResume(){
+        super.onResume();
+
+        TextView textView = findViewById(R.id.textView1);
+        //TextView settingsupdate = findViewById(R.id.settingsupdated);
+
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String username = p.getString("username", "default");
+
+        textView.setText(username + "'s Task List");
+
+        textView.setVisibility(View.VISIBLE);
+
+        this.renderRecyclerViewFromDatabase();
     }
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onTaskSelected(Task task) {
+        Log.i(TAG, "RecyclerView TextView clicked on this Task: " + task);
+        Intent taskDetailsIntent = new Intent(this, TaskDetailActivity.class);
+        taskDetailsIntent.putExtra("task", task.getTitle());
+        taskDetailsIntent.putExtra("taskInfo", task.getBody()+" "+task.getState());
+        MainActivity.this.startActivity(taskDetailsIntent);
     }
+    private void renderRecyclerViewFromDatabase() {
+        // Build the database and instantiate the List that hold the tasks from database
+        this.tasks = new LinkedList<>();
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+        // Get everything from database and put in list of tasks to be rendered by recycler view
+        this.tasks.addAll(AppDataBase.getInstance(getApplicationContext()).TaskDao().getAll());
+
+        // Re android doc: https://developer.android.com/guide/topics/ui/layout/recyclerview
+        // Render Task items to the screen with RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.recyclerView23);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Define Adapter class that is able to communicate with RecyclerView
+        recyclerView.setAdapter(new TasksRecyclerViewAdapter(this.tasks, this));
     }
 }

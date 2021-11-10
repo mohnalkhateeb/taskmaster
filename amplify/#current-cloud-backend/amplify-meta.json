@@ -1,0 +1,60 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-taskmaster-dev-235137-authRole",
+      "UnauthRoleArn": "arn:aws:iam::559880542354:role/amplify-taskmaster-dev-235137-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::559880542354:role/amplify-taskmaster-dev-235137-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-taskmaster-dev-235137-deployment",
+      "UnauthRoleName": "amplify-taskmaster-dev-235137-unauthRole",
+      "StackName": "amplify-taskmaster-dev-235137",
+      "StackId": "arn:aws:cloudformation:eu-west-2:559880542354:stack/amplify-taskmaster-dev-235137/31179830-40de-11ec-8833-0a77bff9e576",
+      "AmplifyAppId": "ddk9yr0fpxsft"
+    }
+  },
+  "api": {
+    "amplifyDatasource": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 60,
+              "description": "AKIAYEW33DCJH3FBM67I"
+            }
+          }
+        },
+        "GraphQLAPIIdOutput": "7di2xmq56ffzba33adzvo62dpu",
+        "GraphQLAPIEndpointOutput": "https://4pwgj6forreahpeykdntxu5fsa.appsync-api.eu-west-2.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-fdtfrdzopbcoflsz3cjdc6x3uy"
+      },
+      "lastPushTimeStamp": "2021-11-10T05:41:36.979Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-taskmaster-dev-235137-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiamplifyDatasource"
+      },
+      "lastPushDirHash": "yaZLJMc2rl165FnyQRBxygGQx8o="
+    }
+  },
+  "function": {
+    "syncConflictHandler8b827983": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "output": {
+        "Region": "eu-west-2",
+        "Arn": "arn:aws:lambda:eu-west-2:559880542354:function:syncConflictHandler8b827983-dev",
+        "Name": "syncConflictHandler8b827983-dev",
+        "LambdaExecutionRole": "syncConflictHandler8b827983LambdaRole-dev"
+      },
+      "lastPushTimeStamp": "2021-11-10T05:41:12.635Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-taskmaster-dev-235137-deployment/amplify-cfn-templates/function/syncConflictHandler8b827983-cloudformation-template.json",
+        "logicalId": "functionsyncConflictHandler8b827983"
+      }
+    }
+  }
+}

@@ -10,6 +10,14 @@
       "StackName": "amplify-taskmaster-dev-235137",
       "StackId": "arn:aws:cloudformation:eu-west-2:559880542354:stack/amplify-taskmaster-dev-235137/31179830-40de-11ec-8833-0a77bff9e576",
       "AmplifyAppId": "ddk9yr0fpxsft"
+    },
+    "categories": {
+      "function": {
+        "syncConflictHandler8b827983": {
+          "deploymentBucketName": "amplify-taskmaster-dev-235137-deployment",
+          "s3Key": "amplify-builds/syncConflictHandler8b827983-696b4a57522f3538314c-build.zip"
+        }
+      }
     }
   }
 }

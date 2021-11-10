@@ -9,12 +9,19 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 90,
-              "description": "AKIAYEW33DCJH3FBM67I"
+              "apiKeyExpirationDays": 60,
+              "description": "AKIAYEW33DCJBN7TWL6X"
             }
           }
         }
       }
+    }
+  },
+  "function": {
+    "syncConflictHandler8b827983": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true
     }
   }
 }

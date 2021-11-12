@@ -3,5 +3,13 @@
     "Version": "0.1.0",
     "IdentityManager": {
         "Default": {}
+    },
+    "AppSync": {
+        "Default": {
+            "ApiUrl": "https://5du4ujn2l5bbvkwbybr6ozrchq.appsync-api.eu-west-1.amazonaws.com/graphql",
+            "Region": "eu-west-1",
+            "AuthMode": "AWS_IAM",
+            "ClientDatabasePrefix": "taskmaster_AWS_IAM"
+        }
     }
 }

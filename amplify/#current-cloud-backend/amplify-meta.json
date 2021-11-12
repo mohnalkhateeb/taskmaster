@@ -1,15 +1,38 @@
 {
   "providers": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-taskmaster-dev-235137-authRole",
-      "UnauthRoleArn": "arn:aws:iam::559880542354:role/amplify-taskmaster-dev-235137-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::559880542354:role/amplify-taskmaster-dev-235137-authRole",
-      "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-taskmaster-dev-235137-deployment",
-      "UnauthRoleName": "amplify-taskmaster-dev-235137-unauthRole",
-      "StackName": "amplify-taskmaster-dev-235137",
-      "StackId": "arn:aws:cloudformation:eu-west-2:559880542354:stack/amplify-taskmaster-dev-235137/31179830-40de-11ec-8833-0a77bff9e576",
-      "AmplifyAppId": "ddk9yr0fpxsft"
+      "AuthRoleName": "amplify-taskmaster-mohammad-212448-authRole",
+      "UnauthRoleArn": "arn:aws:iam::559880542354:role/amplify-taskmaster-mohammad-212448-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::559880542354:role/amplify-taskmaster-mohammad-212448-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-taskmaster-mohammad-212448-deployment",
+      "UnauthRoleName": "amplify-taskmaster-mohammad-212448-unauthRole",
+      "StackName": "amplify-taskmaster-mohammad-212448",
+      "StackId": "arn:aws:cloudformation:eu-west-1:559880542354:stack/amplify-taskmaster-mohammad-212448/4535bd70-43ee-11ec-b491-06580bc3bd5f",
+      "AmplifyAppId": "d3r2q3h5omeqcv"
     }
-  }
+  },
+  "api": {
+    "taskmaster": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AWS_IAM"
+          },
+          "additionalAuthenticationProviders": []
+        },
+        "GraphQLAPIIdOutput": "ce6nxbktizebfdmnlc6yn56tua",
+        "GraphQLAPIEndpointOutput": "https://5du4ujn2l5bbvkwbybr6ozrchq.appsync-api.eu-west-1.amazonaws.com/graphql"
+      },
+      "lastPushTimeStamp": "2021-11-12T20:50:45.393Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-taskmaster-mohammad-212448-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apitaskmaster"
+      },
+      "lastPushDirHash": "UqQCtP36602VlKUftdD6+LFYR/w="
+    }
+  },
+  "function": {}
 }

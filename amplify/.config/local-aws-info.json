@@ -3,5 +3,10 @@
     "configLevel": "project",
     "useProfile": true,
     "profileName": "mohnalkhateeb"
+  },
+  "mohammad": {
+    "configLevel": "project",
+    "useProfile": true,
+    "profileName": "default"
   }
 }

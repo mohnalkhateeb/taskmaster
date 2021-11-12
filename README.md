@@ -51,6 +51,10 @@
 #### All Tasks
 ![allTasks](app/screenshots/newAllTask.png)
 
+# LAB32
+* create a Task resource that replicates our existing Task schema.
+* Update all references to the Task data to instead use AWS Amplify to access your data in DynamoDB instead of in Room
+
 
 
 

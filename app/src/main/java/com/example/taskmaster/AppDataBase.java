@@ -5,8 +5,9 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import com.amplifyframework.datastore.generated.model.TaskToDo;
 
-@Database(entities = {Task.class}, version = 1)
+@Database(entities = {TaskToDo.class}, version = 1)
 public abstract class AppDataBase extends RoomDatabase {
     public abstract TaskDao TaskDao();
 

@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.amplifyframework.datastore.generated.model.TaskToDo;
 
 import java.util.ArrayList;
@@ -47,8 +46,8 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         // Set the reference of which Task
         holder.mTask = taskAtPosition;
         holder.mTitleView.setText(taskAtPosition.getTitle());
-        holder.mBodyView.setText(taskAtPosition.getDescription());
-        holder.mStateView.setText(taskAtPosition.getStatus());
+        holder.mBodyView.setText(taskAtPosition.getBody());
+        holder.mStateView.setText(taskAtPosition.getState());
 
     }
 

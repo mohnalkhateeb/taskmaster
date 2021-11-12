@@ -1,11 +1,11 @@
 # this is an auto generated file. This will be overwritten
-query SyncTasks(
-  $filter: ModelTaskFilterInput
+query SyncTaskToDos(
+  $filter: ModelTaskToDoFilterInput
   $limit: Int
   $nextToken: String
   $lastSync: AWSTimestamp
 ) {
-  syncTasks(
+  syncTaskToDos(
     filter: $filter
     limit: $limit
     nextToken: $nextToken
@@ -13,9 +13,9 @@ query SyncTasks(
   ) {
     items {
       id
-      title
-      description
-      status
+      name
+      body
+      state
       _version
       _deleted
       _lastChangedAt
@@ -26,12 +26,12 @@ query SyncTasks(
     startedAt
   }
 }
-query GetTask($id: ID!) {
-  getTask(id: $id) {
+query GetTaskToDo($id: ID!) {
+  getTaskToDo(id: $id) {
     id
-    title
-    description
-    status
+    name
+    body
+    state
     _version
     _deleted
     _lastChangedAt
@@ -39,17 +39,17 @@ query GetTask($id: ID!) {
     updatedAt
   }
 }
-query ListTasks(
-  $filter: ModelTaskFilterInput
+query ListTaskToDos(
+  $filter: ModelTaskToDoFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listTaskToDos(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      title
-      description
-      status
+      name
+      body
+      state
       _version
       _deleted
       _lastChangedAt

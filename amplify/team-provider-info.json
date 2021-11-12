@@ -12,12 +12,22 @@
       "AmplifyAppId": "ddk9yr0fpxsft"
     },
     "categories": {
-      "function": {
-        "syncConflictHandler8b827983": {
-          "deploymentBucketName": "amplify-taskmaster-dev-235137-deployment",
-          "s3Key": "amplify-builds/syncConflictHandler8b827983-696b4a57522f3538314c-build.zip"
-        }
+      "auth": {
+        "taskmasteraf650717": {}
       }
+    }
+  },
+  "mohammad": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-taskmaster-mohammad-212448-authRole",
+      "UnauthRoleArn": "arn:aws:iam::559880542354:role/amplify-taskmaster-mohammad-212448-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::559880542354:role/amplify-taskmaster-mohammad-212448-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-taskmaster-mohammad-212448-deployment",
+      "UnauthRoleName": "amplify-taskmaster-mohammad-212448-unauthRole",
+      "StackName": "amplify-taskmaster-mohammad-212448",
+      "StackId": "arn:aws:cloudformation:eu-west-1:559880542354:stack/amplify-taskmaster-mohammad-212448/4535bd70-43ee-11ec-b491-06580bc3bd5f",
+      "AmplifyAppId": "d3r2q3h5omeqcv"
     }
   }
 }

@@ -1,7 +1,0 @@
-type TaskToDo @model {
-  id: ID!
-  title: String!
-  description: String
-  status: String
-}
-

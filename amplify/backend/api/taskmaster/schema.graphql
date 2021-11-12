@@ -1,0 +1,6 @@
+type TaskToDo @model @auth{
+  id: ID!
+  name: String!
+  body: String
+  state : String
+}

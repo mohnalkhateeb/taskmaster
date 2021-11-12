@@ -1,8 +1,8 @@
 projects:
-  amplifyDatasource:
+  taskmaster:
     schemaPath: app/src/main/graphql/schema.json
     includes:
-      - taskmaster
+      - app/src/main/graphql/**/*.graphql
     excludes:
       - ./amplify/**
     extensions:
@@ -10,9 +10,6 @@ projects:
         codeGenTarget: ''
         generatedFileName: ''
         docsFilePath: app/src/main/graphql/com/amazonaws/amplify/generated/graphql
-        region: eu-west-2
-        apiId: null
-        maxDepth: 2
 extensions:
   amplify:
     version: 3

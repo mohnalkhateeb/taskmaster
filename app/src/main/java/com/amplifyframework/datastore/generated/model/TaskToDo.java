@@ -18,201 +18,201 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the TaskToDo type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "TaskToDos")
+@ModelConfig(pluralName = "TaskToDo")
 public final class TaskToDo implements Model {
-  public static final QueryField ID = field("TaskToDo", "id");
-  public static final QueryField TITLE = field("TaskToDo", "title");
-  public static final QueryField DESCRIPTION = field("TaskToDo", "description");
-  public static final QueryField STATUS = field("TaskToDo", "status");
-  private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String", isRequired = true) String title;
-  private final @ModelField(targetType="String") String description;
-  private final @ModelField(targetType="String") String status;
-  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
-  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
-  public String getId() {
-      return id;
-  }
-  
-  public String getTitle() {
-      return title;
-  }
-  
-  public String getDescription() {
-      return description;
-  }
-  
-  public String getStatus() {
-      return status;
-  }
-  
-  public Temporal.DateTime getCreatedAt() {
-      return createdAt;
-  }
-  
-  public Temporal.DateTime getUpdatedAt() {
-      return updatedAt;
-  }
-  
-  private TaskToDo(String id, String title, String description, String status) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.status = status;
-  }
-  
-  @Override
-   public boolean equals(Object obj) {
-      if (this == obj) {
-        return true;
-      } else if(obj == null || getClass() != obj.getClass()) {
-        return false;
-      } else {
-      TaskToDo taskToDo = (TaskToDo) obj;
-      return ObjectsCompat.equals(getId(), taskToDo.getId()) &&
-              ObjectsCompat.equals(getTitle(), taskToDo.getTitle()) &&
-              ObjectsCompat.equals(getDescription(), taskToDo.getDescription()) &&
-              ObjectsCompat.equals(getStatus(), taskToDo.getStatus()) &&
-              ObjectsCompat.equals(getCreatedAt(), taskToDo.getCreatedAt()) &&
-              ObjectsCompat.equals(getUpdatedAt(), taskToDo.getUpdatedAt());
-      }
-  }
-  
-  @Override
-   public int hashCode() {
-    return new StringBuilder()
-      .append(getId())
-      .append(getTitle())
-      .append(getDescription())
-      .append(getStatus())
-      .append(getCreatedAt())
-      .append(getUpdatedAt())
-      .toString()
-      .hashCode();
-  }
-  
-  @Override
-   public String toString() {
-    return new StringBuilder()
-      .append("TaskToDo {")
-      .append("id=" + String.valueOf(getId()) + ", ")
-      .append("title=" + String.valueOf(getTitle()) + ", ")
-      .append("description=" + String.valueOf(getDescription()) + ", ")
-      .append("status=" + String.valueOf(getStatus()) + ", ")
-      .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
-      .append("updatedAt=" + String.valueOf(getUpdatedAt()))
-      .append("}")
-      .toString();
-  }
-  
-  public static TitleStep builder() {
-      return new Builder();
-  }
-  
-  /** 
-   * WARNING: This method should not be used to build an instance of this object for a CREATE mutation.
-   * This is a convenience method to return an instance of the object with only its ID populated
-   * to be used in the context of a parameter in a delete mutation or referencing a foreign key
-   * in a relationship.
-   * @param id the id of the existing item this instance will represent
-   * @return an instance of this model with only ID populated
-   */
-  public static TaskToDo justId(String id) {
-    return new TaskToDo(
-      id,
-      null,
-      null,
-      null
-    );
-  }
-  
-  public CopyOfBuilder copyOfBuilder() {
-    return new CopyOfBuilder(id,
-      title,
-      description,
-      status);
-  }
-  public interface TitleStep {
-    BuildStep title(String title);
-  }
-  
+    public static final QueryField ID = field("TaskToDo", "id");
+    public static final QueryField NAME = field("TaskToDo", "name");
+    public static final QueryField BODY = field("TaskToDo", "body");
+    public static final QueryField STATE = field("TaskToDo", "state");
+    private final @ModelField(targetType="ID", isRequired = true) String id;
+    private final @ModelField(targetType="String", isRequired = true) String name;
+    private final @ModelField(targetType="String") String body;
+    private final @ModelField(targetType="String") String state;
+    private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
+    private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
+    public String getId() {
+        return id;
+    }
 
-  public interface BuildStep {
-    TaskToDo build();
-    BuildStep id(String id);
-    BuildStep description(String description);
-    BuildStep status(String status);
-  }
-  
+    public String getName() {
+        return name;
+    }
 
-  public static class Builder implements TitleStep, BuildStep {
-    private String id;
-    private String title;
-    private String description;
-    private String status;
-    @Override
-     public TaskToDo build() {
-        String id = this.id != null ? this.id : UUID.randomUUID().toString();
-        
-        return new TaskToDo(
-          id,
-          title,
-          description,
-          status);
+    public String getBody() {
+        return body;
     }
-    
-    @Override
-     public BuildStep title(String title) {
-        Objects.requireNonNull(title);
-        this.title = title;
-        return this;
+
+    public String getState() {
+        return state;
     }
-    
-    @Override
-     public BuildStep description(String description) {
-        this.description = description;
-        return this;
+
+    public Temporal.DateTime getCreatedAt() {
+        return createdAt;
     }
-    
-    @Override
-     public BuildStep status(String status) {
-        this.status = status;
-        return this;
+
+    public Temporal.DateTime getUpdatedAt() {
+        return updatedAt;
     }
-    
-    /** 
-     * @param id id
-     * @return Current Builder instance, for fluent method chaining
-     */
-    public BuildStep id(String id) {
+
+    private TaskToDo(String id, String name, String body, String state) {
         this.id = id;
-        return this;
+        this.name = name;
+        this.body = body;
+        this.state = state;
     }
-  }
-  
 
-  public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String description, String status) {
-      super.id(id);
-      super.title(title)
-        .description(description)
-        .status(status);
-    }
-    
     @Override
-     public CopyOfBuilder title(String title) {
-      return (CopyOfBuilder) super.title(title);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if(obj == null || getClass() != obj.getClass()) {
+            return false;
+        } else {
+            TaskToDo taskToDo = (TaskToDo) obj;
+            return ObjectsCompat.equals(getId(), taskToDo.getId()) &&
+                    ObjectsCompat.equals(getName(), taskToDo.getName()) &&
+                    ObjectsCompat.equals(getBody(), taskToDo.getBody()) &&
+                    ObjectsCompat.equals(getState(), taskToDo.getState()) &&
+                    ObjectsCompat.equals(getCreatedAt(), taskToDo.getCreatedAt()) &&
+                    ObjectsCompat.equals(getUpdatedAt(), taskToDo.getUpdatedAt());
+        }
     }
-    
+
     @Override
-     public CopyOfBuilder description(String description) {
-      return (CopyOfBuilder) super.description(description);
+    public int hashCode() {
+        return new StringBuilder()
+                .append(getId())
+                .append(getName())
+                .append(getBody())
+                .append(getState())
+                .append(getCreatedAt())
+                .append(getUpdatedAt())
+                .toString()
+                .hashCode();
     }
-    
+
     @Override
-     public CopyOfBuilder status(String status) {
-      return (CopyOfBuilder) super.status(status);
+    public String toString() {
+        return new StringBuilder()
+                .append("TaskToDo {")
+                .append("id=" + String.valueOf(getId()) + ", ")
+                .append("name=" + String.valueOf(getName()) + ", ")
+                .append("body=" + String.valueOf(getBody()) + ", ")
+                .append("state=" + String.valueOf(getState()) + ", ")
+                .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
+                .append("updatedAt=" + String.valueOf(getUpdatedAt()))
+                .append("}")
+                .toString();
     }
-  }
-  
+
+    public static NameStep builder() {
+        return new Builder();
+    }
+
+    /**
+     * WARNING: This method should not be used to build an instance of this object for a CREATE mutation.
+     * This is a convenience method to return an instance of the object with only its ID populated
+     * to be used in the context of a parameter in a delete mutation or referencing a foreign key
+     * in a relationship.
+     * @param id the id of the existing item this instance will represent
+     * @return an instance of this model with only ID populated
+     */
+    public static TaskToDo justId(String id) {
+        return new TaskToDo(
+                id,
+                null,
+                null,
+                null
+        );
+    }
+
+    public CopyOfBuilder copyOfBuilder() {
+        return new CopyOfBuilder(id,
+                name,
+                body,
+                state);
+    }
+    public interface NameStep {
+        BuildStep name(String name);
+    }
+
+
+    public interface BuildStep {
+        TaskToDo build();
+        BuildStep id(String id);
+        BuildStep body(String body);
+        BuildStep state(String state);
+    }
+
+
+    public static class Builder implements NameStep, BuildStep {
+        private String id;
+        private String name;
+        private String body;
+        private String state;
+        @Override
+        public TaskToDo build() {
+            String id = this.id != null ? this.id : UUID.randomUUID().toString();
+
+            return new TaskToDo(
+                    id,
+                    name,
+                    body,
+                    state);
+        }
+
+        @Override
+        public BuildStep name(String name) {
+            Objects.requireNonNull(name);
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public BuildStep body(String body) {
+            this.body = body;
+            return this;
+        }
+
+        @Override
+        public BuildStep state(String state) {
+            this.state = state;
+            return this;
+        }
+
+        /**
+         * @param id id
+         * @return Current Builder instance, for fluent method chaining
+         */
+        public BuildStep id(String id) {
+            this.id = id;
+            return this;
+        }
+    }
+
+
+    public final class CopyOfBuilder extends Builder {
+        private CopyOfBuilder(String id, String name, String body, String state) {
+            super.id(id);
+            super.name(name)
+                    .body(body)
+                    .state(state);
+        }
+
+        @Override
+        public CopyOfBuilder name(String name) {
+            return (CopyOfBuilder) super.name(name);
+        }
+
+        @Override
+        public CopyOfBuilder body(String body) {
+            return (CopyOfBuilder) super.body(body);
+        }
+
+        @Override
+        public CopyOfBuilder state(String state) {
+            return (CopyOfBuilder) super.state(state);
+        }
+    }
+
 }

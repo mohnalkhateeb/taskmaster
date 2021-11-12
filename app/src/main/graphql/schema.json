@@ -16,7 +16,7 @@
                 "description": null,
                 "fields": [
                     {
-                        "name": "syncTasks",
+                        "name": "syncTaskToDos",
                         "description": null,
                         "args": [
                             {
@@ -24,7 +24,7 @@
                                 "description": null,
                                 "type": {
                                     "kind": "INPUT_OBJECT",
-                                    "name": "ModelTaskFilterInput",
+                                    "name": "ModelTaskToDoFilterInput",
                                     "ofType": null
                                 },
                                 "defaultValue": null
@@ -62,14 +62,14 @@
                         ],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "ModelTaskConnection",
+                            "name": "ModelTaskToDoConnection",
                             "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
                     {
-                        "name": "getTask",
+                        "name": "getTaskToDo",
                         "description": null,
                         "args": [
                             {
@@ -89,14 +89,14 @@
                         ],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "Task",
+                            "name": "TaskToDo",
                             "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
                     {
-                        "name": "listTasks",
+                        "name": "listTaskToDos",
                         "description": null,
                         "args": [
                             {
@@ -104,7 +104,7 @@
                                 "description": null,
                                 "type": {
                                     "kind": "INPUT_OBJECT",
-                                    "name": "ModelTaskFilterInput",
+                                    "name": "ModelTaskToDoFilterInput",
                                     "ofType": null
                                 },
                                 "defaultValue": null
@@ -132,7 +132,7 @@
                         ],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "ModelTaskConnection",
+                            "name": "ModelTaskToDoConnection",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -146,7 +146,7 @@
             },
             {
                 "kind": "INPUT_OBJECT",
-                "name": "ModelTaskFilterInput",
+                "name": "ModelTaskToDoFilterInput",
                 "description": null,
                 "fields": null,
                 "inputFields": [
@@ -161,7 +161,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "title",
+                        "name": "name",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -171,7 +171,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "description",
+                        "name": "body",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -181,7 +181,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "status",
+                        "name": "state",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -198,7 +198,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "INPUT_OBJECT",
-                                "name": "ModelTaskFilterInput",
+                                "name": "ModelTaskToDoFilterInput",
                                 "ofType": null
                             }
                         },
@@ -212,7 +212,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "INPUT_OBJECT",
-                                "name": "ModelTaskFilterInput",
+                                "name": "ModelTaskToDoFilterInput",
                                 "ofType": null
                             }
                         },
@@ -223,7 +223,7 @@
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
-                            "name": "ModelTaskFilterInput",
+                            "name": "ModelTaskToDoFilterInput",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -731,7 +731,7 @@
             },
             {
                 "kind": "OBJECT",
-                "name": "ModelTaskConnection",
+                "name": "ModelTaskToDoConnection",
                 "description": null,
                 "fields": [
                     {
@@ -739,12 +739,20 @@
                         "description": null,
                         "args": [],
                         "type": {
-                            "kind": "LIST",
+                            "kind": "NON_NULL",
                             "name": null,
                             "ofType": {
-                                "kind": "OBJECT",
-                                "name": "Task",
-                                "ofType": null
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "OBJECT",
+                                        "name": "TaskToDo",
+                                        "ofType": null
+                                    }
+                                }
                             }
                         },
                         "isDeprecated": false,
@@ -782,7 +790,7 @@
             },
             {
                 "kind": "OBJECT",
-                "name": "Task",
+                "name": "TaskToDo",
                 "description": null,
                 "fields": [
                     {
@@ -802,7 +810,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "title",
+                        "name": "name",
                         "description": null,
                         "args": [],
                         "type": {
@@ -818,7 +826,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "description",
+                        "name": "body",
                         "description": null,
                         "args": [],
                         "type": {
@@ -830,7 +838,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "status",
+                        "name": "state",
                         "description": null,
                         "args": [],
                         "type": {
@@ -939,7 +947,7 @@
                 "description": null,
                 "fields": [
                     {
-                        "name": "createTask",
+                        "name": "createTaskToDo",
                         "description": null,
                         "args": [
                             {
@@ -950,7 +958,7 @@
                                     "name": null,
                                     "ofType": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "CreateTaskInput",
+                                        "name": "CreateTaskToDoInput",
                                         "ofType": null
                                     }
                                 },
@@ -961,7 +969,7 @@
                                 "description": null,
                                 "type": {
                                     "kind": "INPUT_OBJECT",
-                                    "name": "ModelTaskConditionInput",
+                                    "name": "ModelTaskToDoConditionInput",
                                     "ofType": null
                                 },
                                 "defaultValue": null
@@ -969,14 +977,14 @@
                         ],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "Task",
+                            "name": "TaskToDo",
                             "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
                     {
-                        "name": "updateTask",
+                        "name": "updateTaskToDo",
                         "description": null,
                         "args": [
                             {
@@ -987,7 +995,7 @@
                                     "name": null,
                                     "ofType": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "UpdateTaskInput",
+                                        "name": "UpdateTaskToDoInput",
                                         "ofType": null
                                     }
                                 },
@@ -998,7 +1006,7 @@
                                 "description": null,
                                 "type": {
                                     "kind": "INPUT_OBJECT",
-                                    "name": "ModelTaskConditionInput",
+                                    "name": "ModelTaskToDoConditionInput",
                                     "ofType": null
                                 },
                                 "defaultValue": null
@@ -1006,14 +1014,14 @@
                         ],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "Task",
+                            "name": "TaskToDo",
                             "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
                     {
-                        "name": "deleteTask",
+                        "name": "deleteTaskToDo",
                         "description": null,
                         "args": [
                             {
@@ -1024,7 +1032,7 @@
                                     "name": null,
                                     "ofType": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "DeleteTaskInput",
+                                        "name": "DeleteTaskToDoInput",
                                         "ofType": null
                                     }
                                 },
@@ -1035,7 +1043,7 @@
                                 "description": null,
                                 "type": {
                                     "kind": "INPUT_OBJECT",
-                                    "name": "ModelTaskConditionInput",
+                                    "name": "ModelTaskToDoConditionInput",
                                     "ofType": null
                                 },
                                 "defaultValue": null
@@ -1043,7 +1051,7 @@
                         ],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "Task",
+                            "name": "TaskToDo",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -1057,7 +1065,7 @@
             },
             {
                 "kind": "INPUT_OBJECT",
-                "name": "CreateTaskInput",
+                "name": "CreateTaskToDoInput",
                 "description": null,
                 "fields": null,
                 "inputFields": [
@@ -1072,7 +1080,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "title",
+                        "name": "name",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
@@ -1086,7 +1094,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "description",
+                        "name": "body",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -1096,7 +1104,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "status",
+                        "name": "state",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -1122,12 +1130,12 @@
             },
             {
                 "kind": "INPUT_OBJECT",
-                "name": "ModelTaskConditionInput",
+                "name": "ModelTaskToDoConditionInput",
                 "description": null,
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "title",
+                        "name": "name",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -1137,7 +1145,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "description",
+                        "name": "body",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -1147,7 +1155,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "status",
+                        "name": "state",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -1164,7 +1172,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "INPUT_OBJECT",
-                                "name": "ModelTaskConditionInput",
+                                "name": "ModelTaskToDoConditionInput",
                                 "ofType": null
                             }
                         },
@@ -1178,7 +1186,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "INPUT_OBJECT",
-                                "name": "ModelTaskConditionInput",
+                                "name": "ModelTaskToDoConditionInput",
                                 "ofType": null
                             }
                         },
@@ -1189,7 +1197,7 @@
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
-                            "name": "ModelTaskConditionInput",
+                            "name": "ModelTaskToDoConditionInput",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -1201,7 +1209,7 @@
             },
             {
                 "kind": "INPUT_OBJECT",
-                "name": "UpdateTaskInput",
+                "name": "UpdateTaskToDoInput",
                 "description": null,
                 "fields": null,
                 "inputFields": [
@@ -1220,7 +1228,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "title",
+                        "name": "name",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -1230,7 +1238,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "description",
+                        "name": "body",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -1240,7 +1248,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "status",
+                        "name": "state",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -1266,7 +1274,7 @@
             },
             {
                 "kind": "INPUT_OBJECT",
-                "name": "DeleteTaskInput",
+                "name": "DeleteTaskToDoInput",
                 "description": null,
                 "fields": null,
                 "inputFields": [
@@ -1305,36 +1313,36 @@
                 "description": null,
                 "fields": [
                     {
-                        "name": "onCreateTask",
+                        "name": "onCreateTaskToDo",
                         "description": null,
                         "args": [],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "Task",
+                            "name": "TaskToDo",
                             "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
                     {
-                        "name": "onUpdateTask",
+                        "name": "onUpdateTaskToDo",
                         "description": null,
                         "args": [],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "Task",
+                            "name": "TaskToDo",
                             "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
                     {
-                        "name": "onDeleteTask",
+                        "name": "onDeleteTaskToDo",
                         "description": null,
                         "args": [],
                         "type": {
                             "kind": "OBJECT",
-                            "name": "Task",
+                            "name": "TaskToDo",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -2623,6 +2631,15 @@
             },
             {
                 "name": "aws_iam",
+                "description": null,
+                "locations": [
+                    "FIELD_DEFINITION",
+                    "OBJECT"
+                ],
+                "args": []
+            },
+            {
+                "name": "aws_lambda",
                 "description": null,
                 "locations": [
                     "FIELD_DEFINITION",

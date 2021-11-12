@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         Log.i(TAG, "RecyclerView TextView clicked on this Task: " + task);
         Intent taskDetailsIntent = new Intent(this, TaskDetailActivity.class);
         taskDetailsIntent.putExtra("task", task.getTitle());
-        taskDetailsIntent.putExtra("taskInfo", task.getDescription()+" "+task.getStatus());
+        taskDetailsIntent.putExtra("taskInfo", task.getBody()+" "+task.getStatus());
         MainActivity.this.startActivity(taskDetailsIntent);
     }
 //    private void renderRecyclerViewFromDatabase() {

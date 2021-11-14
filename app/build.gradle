@@ -22,8 +22,10 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+
     }
     buildFeatures {
         viewBinding true
@@ -49,6 +51,10 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.3.0'
     annotationProcessor 'androidx.room:room-compiler:2.3.0'
     implementation "android.arch.lifecycle:extensions:1.0.0"
+    implementation 'com.amplifyframework:core:1.24.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    implementation 'com.amplifyframework:aws-api:1.28.3'
+    implementation 'com.amplifyframework:aws-datastore:1.28.3'
 
 
 

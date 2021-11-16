@@ -52,5 +52,10 @@
 ![allTasks](app/screenshots/newAllTask.png)
 
 
+# LAB32 -
+* Start with AWS
+#### Main Activity
+![Test](app/screenshots/AWSLab32.png)
+
 
 

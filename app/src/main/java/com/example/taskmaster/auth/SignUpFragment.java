@@ -49,7 +49,7 @@ public class SignUpFragment extends Fragment {
     private final View.OnClickListener listener = view -> {
         String name = yourNameEditText.getText().toString();
         String email = yourEmailEditText.getText().toString();
-//        String[] flNames = name.split(" ");
+//        String[] flNames = name.split(" ");// deleted
 //        createNewUser(flNames[0], flNames[1], "1234567890", email, "password", "962-555-5555");
         signUpCompleteListener.signUpCompleted();
         Intent intent = new Intent(getActivity(), MainActivity.class);

@@ -1,0 +1,157 @@
+type TaskToDo {
+  id: ID!
+  title: String!
+  description: String
+  status: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTaskToDoConnection {
+  items: [TaskToDo]
+  nextToken: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelTaskToDoFilterInput {
+  id: ModelIDInput
+  title: ModelStringInput
+  description: ModelStringInput
+  status: ModelStringInput
+  and: [ModelTaskToDoFilterInput]
+  or: [ModelTaskToDoFilterInput]
+  not: ModelTaskToDoFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getTaskToDo(id: ID!): TaskToDo
+  listTaskToDos(filter: ModelTaskToDoFilterInput, limit: Int, nextToken: String): ModelTaskToDoConnection
+}
+
+input CreateTaskToDoInput {
+  id: ID
+  title: String!
+  description: String
+  status: String
+}
+
+input UpdateTaskToDoInput {
+  id: ID!
+  title: String
+  description: String
+  status: String
+}
+
+input DeleteTaskToDoInput {
+  id: ID!
+}
+
+type Mutation {
+  createTaskToDo(input: CreateTaskToDoInput!, condition: ModelTaskToDoConditionInput): TaskToDo
+  updateTaskToDo(input: UpdateTaskToDoInput!, condition: ModelTaskToDoConditionInput): TaskToDo
+  deleteTaskToDo(input: DeleteTaskToDoInput!, condition: ModelTaskToDoConditionInput): TaskToDo
+}
+
+input ModelTaskToDoConditionInput {
+  title: ModelStringInput
+  description: ModelStringInput
+  status: ModelStringInput
+  and: [ModelTaskToDoConditionInput]
+  or: [ModelTaskToDoConditionInput]
+  not: ModelTaskToDoConditionInput
+}
+
+type Subscription {
+  onCreateTaskToDo: TaskToDo @aws_subscribe(mutations: ["createTaskToDo"])
+  onUpdateTaskToDo: TaskToDo @aws_subscribe(mutations: ["updateTaskToDo"])
+  onDeleteTaskToDo: TaskToDo @aws_subscribe(mutations: ["deleteTaskToDo"])
+}

@@ -1,18 +1,29 @@
 package com.example.taskmaster;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.AWSDataStorePlugin;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        configureAmplify();
         this.renderRecyclerViewFromDatabase();
         Button button1 = findViewById(R.id.button);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +122,26 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Define Adapter class that is able to communicate with RecyclerView
         recyclerView.setAdapter(new TasksRecyclerViewAdapter(this.tasks, (TasksRecyclerViewAdapter.OnTaskSelectedListener) this));
+        Handler handler = new Handler(Looper.myLooper(), new Handler.Callback() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+
+                recyclerView.getAdapter().notifyDataSetChanged();
+                return false;
+            }
+        });
+        Amplify.API.query(
+                ModelQuery.list(com.amplifyframework.datastore.generated.model.Task.class),
+                response -> {
+                    for (com.amplifyframework.datastore.generated.model.Task todo : response.getData()) {
+                        Task taskOrg = new Task(todo.getTitle(),todo.getBody(),todo.getState());
+                        Log.i("graph testing", todo.getTitle());
+                        tasks.add(taskOrg);
+                    }
+                    handler.sendEmptyMessage(1);
+                },
+                error -> Log.e("MyAmplifyApp", "Query failure", error));
     }
     @Override
     public void onStart(){
@@ -165,4 +196,16 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         // Define Adapter class that is able to communicate with RecyclerView
         recyclerView.setAdapter(new TasksRecyclerViewAdapter(this.tasks, this));
     }
+    private void configureAmplify() {
+        try {
+            Amplify.addPlugin(new AWSDataStorePlugin()); // stores records locally
+            Amplify.addPlugin(new AWSApiPlugin()); // stores things in DynamoDB and allows us to perform GraphQL queries
+            Amplify.configure(getApplicationContext());
+
+            Log.i(TAG, "Initialized Amplify");
+        } catch (AmplifyException error) {
+            Log.e(TAG, "Could not initialize Amplify", error);
+        }
+    }
+
 }

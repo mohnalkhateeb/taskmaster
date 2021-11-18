@@ -1,13 +1,23 @@
 package com.example.taskmaster.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.amplifyframework.core.Amplify;
+import com.example.taskmaster.MainActivity;
 import com.example.taskmaster.R;
 
 /**
@@ -25,6 +35,15 @@ public class SignInFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private EditText yourEmailEditText;
+    private EditText yourPasswordEditText;
+
+    private final View.OnClickListener listener = view -> {
+        String email = yourEmailEditText.getText().toString();
+        String password = yourPasswordEditText.getText().toString();
+
+        signIn(email, password);
+    };
 
     public SignInFragment() {
         // Required empty public constructor
@@ -62,5 +81,28 @@ public class SignInFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sign_in, container, false);
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (getActivity() != null) {
+            yourEmailEditText = getActivity().findViewById(R.id.et_email1);
+            yourPasswordEditText = getActivity().findViewById(R.id.et_password1);
+            Button registerButton = getActivity().findViewById(R.id.btn_login);
+            registerButton.setOnClickListener(listener);
+        }
+    }
+
+    private void signIn(String email, String password) {
+        Amplify.Auth.signIn(
+                email,
+                password,
+                result -> {
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    Log.i("AuthQuickstart", result.isSignInComplete() ? "Sign in succeeded" : "Sign in not complete");
+                },
+                error -> Log.e("AuthQuickstart", error.toString())
+        );
     }
 }

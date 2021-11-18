@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class AuthenticationPagerAdapter  extends FragmentPagerAdapter {
     private final ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
 
-    public AuthenticationPagerAdapter(@NonNull FragmentManager fm, int behavior) {
-        super(fm, behavior);
+    public AuthenticationPagerAdapter(@NonNull FragmentManager fm) {
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
 

@@ -23,4 +23,6 @@
     <string name="password">Password</string>
     <string name="re_type_password">Retype Password</string>
     <string name="swipe_right_for_login">Swipe for Sign In</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="please_enter_the_verification_code_sent_to_your_email">Please enter the verification code sent to your email</string>
 </resources>

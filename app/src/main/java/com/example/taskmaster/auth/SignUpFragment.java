@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.auth.AuthUserAttributeKey;
+import com.amplifyframework.auth.options.AuthSignUpOptions;
 import com.amplifyframework.core.Amplify;
 import com.example.taskmaster.MainActivity;
 import com.example.taskmaster.R;
@@ -36,6 +38,7 @@ public class SignUpFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "SignUpFragment";
     private static final String USER_ID = "userId";
+    public static final String USER_EMAIL = "userEmail";
 
 
     // TODO: Rename and change types of parameters
@@ -43,23 +46,18 @@ public class SignUpFragment extends Fragment {
     private String mParam2;
     private EditText yourNameEditText;
     private EditText yourEmailEditText;
+    private EditText yourPasswordEditText;
     private OnSignUpComplete signUpCompleteListener;
 
     private SharedPreferences sharedPref;
     private final View.OnClickListener listener = view -> {
         String name = yourNameEditText.getText().toString();
         String email = yourEmailEditText.getText().toString();
+        String password = yourPasswordEditText.getText().toString();
 //        String[] flNames = name.split(" ");// deleted
 //        createNewUser(flNames[0], flNames[1], "1234567890", email, "password", "962-555-5555");
-        signUpCompleteListener.signUpCompleted();
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        Bundle bundle = new Bundle();
-                    bundle.putString("a", "ABC");
-                    bundle.putString("b", "123");
-                    bundle.putString("c", "JKL");
-                    bundle.putString("d", "XYZ");
-                    intent.putExtra("bundle", bundle);
-                    startActivity(intent);
+        createNewUserAuth(email, password);
+
     };
     public SignUpFragment() {
         // Required empty public constructor
@@ -107,6 +105,7 @@ public class SignUpFragment extends Fragment {
         if (getActivity() != null) {
             yourNameEditText = getActivity().findViewById(R.id.et_name);
             yourEmailEditText = getActivity().findViewById(R.id.et_email);
+            yourPasswordEditText = getActivity().findViewById(R.id.et_password);
             Button registerButton = getActivity().findViewById(R.id.btn_register);
             registerButton.setOnClickListener(listener);
 
@@ -132,6 +131,20 @@ public class SignUpFragment extends Fragment {
 //                    startActivity(intent);
 //
 //    }
+private void createNewUserAuth(String email, String password) {
+
+    AuthSignUpOptions options = AuthSignUpOptions.builder()
+            .userAttribute(AuthUserAttributeKey.email(), email)
+            .build();
+    Amplify.Auth.signUp(email, password, options,
+            result -> Log.i(TAG, "Result: " + result.toString()),
+            error -> Log.e(TAG, "Sign up failed", error)
+    );
+    signUpCompleteListener.signUpCompleted();
+    Intent intent = new Intent(getActivity(), ConfirmSignUpActivity.class);
+//    intent.putExtra(USER_EMAIL, options.getUserAttributes().getEmail());
+    startActivity(intent);
+}
 
     public void setSignUpListener(OnSignUpComplete listener) {
         signUpCompleteListener = listener;

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.example.taskmaster.R;
@@ -22,7 +23,7 @@ public class AuthActivity extends AppCompatActivity {
 
         ViewPager viewPager = findViewById(R.id.viewPager);
 
-        AuthenticationPagerAdapter pagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager(),0);
+        AuthenticationPagerAdapter pagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager());
         SignUpFragment signUpFragment = SignUpFragment.newInstance("", "");
         signUpFragment.setSignUpListener(new SignUpFragment.OnSignUpComplete() {
             @Override
@@ -31,14 +32,15 @@ public class AuthActivity extends AppCompatActivity {
             }
         });
 
-        pagerAdapter.addFragments(signUpFragment);
         pagerAdapter.addFragments(SignInFragment.newInstance("", ""));
+        pagerAdapter.addFragments(signUpFragment);
         viewPager.setAdapter(pagerAdapter);
     }
     private void configureAWS() {
         try {
-            Amplify.addPlugin(new AWSDataStorePlugin());
+//            Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.configure(getApplicationContext());
 
             Log.i("Tutorial", "Initialized Amplify");

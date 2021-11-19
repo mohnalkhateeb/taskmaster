@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
@@ -204,6 +205,16 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         textView.setVisibility(View.VISIBLE);
 
         this.renderRecyclerViewFromDatabase();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AuthUser authUser = Amplify.Auth.getCurrentUser();
+                if (authUser != null) textView.setText(authUser.getUsername()+ "'s Task List");
+
+            }
+        }, 2000);
     }
     @Override
     public void onTaskSelected(Task task) {

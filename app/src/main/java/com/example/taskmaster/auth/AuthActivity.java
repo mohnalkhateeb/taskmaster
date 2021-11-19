@@ -11,6 +11,7 @@ import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.example.taskmaster.R;
 
 public class AuthActivity extends AppCompatActivity {
@@ -41,6 +42,7 @@ public class AuthActivity extends AppCompatActivity {
 //            Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.addPlugin(new AWSCognitoAuthPlugin());
+            Amplify.addPlugin(new AWSS3StoragePlugin());
             Amplify.configure(getApplicationContext());
 
             Log.i("Tutorial", "Initialized Amplify");

@@ -22,15 +22,17 @@ import android.widget.TextView;
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.example.taskmaster.auth.AuthActivity;
-
+import com.amplifyframework.datastore.generated.model.Task;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TasksRecyclerViewAdapter.OnTaskSelectedListener{
+public  class MainActivity extends AppCompatActivity implements TasksRecyclerViewAdapter.OnTaskSelectedListener{
 
     private static final String TAG = "MainActivity";
     private List<Task> tasks;
@@ -136,19 +138,19 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
             }
         });
 
-        Task taskA = new Task("Eating", "HUMMMM", "IN_PROGRESS");
-        Task taskB = new Task("Grade labs", "By 10:00pm", "NEW");
-        Task taskC = new Task("SLEEPING", "IN_DREAM", "ASSIGNED" );
-        this.tasks = new LinkedList<>();
-        this.tasks.add(taskA);
-        this.tasks.add(taskB);
-        this.tasks.add(taskC);
+//        Task taskA = new Task("Eating", "HUMMMM", "IN_PROGRESS");
+//        Task taskB = new Task("Grade labs", "By 10:00pm", "NEW");
+//        Task taskC = new Task("SLEEPING", "IN_DREAM", "ASSIGNED" );
+//        this.tasks = new LinkedList<>();
+//        this.tasks.add(taskA);
+//        this.tasks.add(taskB);
+//        this.tasks.add(taskC);
         // Re: https://developer.android.com/guide/topics/ui/layout/recyclerview
         // Render Task items to the screen with RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView23);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // Define Adapter class that is able to communicate with RecyclerView
-        recyclerView.setAdapter(new TasksRecyclerViewAdapter(this.tasks, (TasksRecyclerViewAdapter.OnTaskSelectedListener) this));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        // Define Adapter class that is able to communicate with RecyclerView
+//        recyclerView.setAdapter(new TasksRecyclerViewAdapter(this.tasks, (TasksRecyclerViewAdapter.OnTaskSelectedListener) this));
         Handler handler = new Handler(Looper.myLooper(), new Handler.Callback() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -163,13 +165,17 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
                 ModelQuery.list(com.amplifyframework.datastore.generated.model.Task.class),
                 response -> {
                     for (com.amplifyframework.datastore.generated.model.Task todo : response.getData()) {
-                        Task taskOrg = new Task(todo.getTitle(),todo.getBody(),todo.getState());
+                        Task taskOrg = new Task(todo.getId(),todo.getTitle(),todo.getBody(),todo.getState(), todo.getFile());
                         Log.i("graph testing", todo.getTitle());
                         tasks.add(taskOrg);
                     }
                     handler.sendEmptyMessage(1);
                 },
                 error -> Log.e("MyAmplifyApp", "Query failure", error));
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Define Adapter class that is able to communicate with RecyclerView
+        recyclerView.setAdapter(new TasksRecyclerViewAdapter(this.tasks, (TasksRecyclerViewAdapter.OnTaskSelectedListener) this));
 
 
 
@@ -204,15 +210,31 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         textView.setVisibility(View.VISIBLE);
 
         this.renderRecyclerViewFromDatabase();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AuthUser authUser = Amplify.Auth.getCurrentUser();
+                if (authUser != null) textView.setText(authUser.getUsername()+ "'s Task List");
+
+            }
+        }, 2000);
     }
-    @Override
-    public void onTaskSelected(Task task) {
-        Log.i(TAG, "RecyclerView TextView clicked on this Task: " + task);
-        Intent taskDetailsIntent = new Intent(this, TaskDetailActivity.class);
-        taskDetailsIntent.putExtra("task", task.getTitle());
-        taskDetailsIntent.putExtra("taskInfo", task.getBody()+" "+task.getState());
-        MainActivity.this.startActivity(taskDetailsIntent);
-    }
+
+
+
+//    @Override
+//    public void onTaskSelected(com.amplifyframework.datastore.generated.model.Task task) {
+//        Log.i(TAG, "RecyclerView TextView clicked on this Task: " + task);
+//        Intent taskDetailsIntent = new Intent(this, TaskDetailActivity.class);
+//        taskDetailsIntent.putExtra("task", task.getTitle());
+//        taskDetailsIntent.putExtra("taskInfo", task.getBody()+" "+task.getState());
+//        taskDetailsIntent.putExtra("taskImage" , task.getFile());
+//        MainActivity.this.startActivity(taskDetailsIntent);
+//    }
+
+
     private void renderRecyclerViewFromDatabase() {
         // Build the database and instantiate the List that hold the tasks from database
         this.tasks = new LinkedList<>();
@@ -261,4 +283,13 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
     }
 
 
+    @Override
+    public void onTaskSelected(com.amplifyframework.datastore.generated.model.Task task) {
+        Log.i(TAG, "RecyclerView TextView clicked on this Task: " + task);
+        Intent taskDetailsIntent = new Intent(this, TaskDetailActivity.class);
+        taskDetailsIntent.putExtra("task", task.getTitle());
+        taskDetailsIntent.putExtra("taskInfo", task.getBody()+" "+task.getState());
+        taskDetailsIntent.putExtra("taskImage" , task.getFile());
+        MainActivity.this.startActivity(taskDetailsIntent);
+    }
 }

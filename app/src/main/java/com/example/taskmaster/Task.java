@@ -20,10 +20,14 @@ public class Task {
     @ColumnInfo(name = "state")
     private String state;
 
-    public Task(String title, String body, String state) {
+    public Task(String title, String body, String state ) {
         this.title = title;
         this.body = body;
         this.state = state;
+
+    }
+
+    public Task(String title, String body, String state, String file) {
     }
 
     public Long getId() {

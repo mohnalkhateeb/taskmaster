@@ -6,10 +6,7 @@
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
-            }
+            "authenticationType": "AWS_IAM"
           },
           "additionalAuthenticationProviders": []
         }
@@ -42,6 +39,12 @@
           "EMAIL"
         ]
       }
+    }
+  },
+  "storage": {
+    "taskFiles": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
     }
   }
 }

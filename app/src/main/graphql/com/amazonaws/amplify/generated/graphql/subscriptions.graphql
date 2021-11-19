@@ -5,6 +5,7 @@ subscription OnCreateTask {
     title
     body
     state
+    file
     _version
     _deleted
     _lastChangedAt
@@ -18,6 +19,7 @@ subscription OnUpdateTask {
     title
     body
     state
+    file
     _version
     _deleted
     _lastChangedAt
@@ -31,6 +33,7 @@ subscription OnDeleteTask {
     title
     body
     state
+    file
     _version
     _deleted
     _lastChangedAt

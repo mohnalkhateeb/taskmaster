@@ -33,6 +33,14 @@ public class AddTaskActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task2);
         Button button3 = findViewById(R.id.button3);
+        Button addFile = findViewById(R.id.button5);
+        addFile.setOnClickListener(v -> {
+            uploadFile = new Intent(Intent.ACTION_GET_CONTENT);
+            uploadFile.setType("*/*");
+            uploadFile = Intent.createChooser(uploadFile, "Choose a file");
+            startActivityForResult(uploadFile, 1234);
+
+        });
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +65,7 @@ public class AddTaskActivity2 extends AppCompatActivity {
                 String userInputText = userInput.getText().toString();
                 String userInputText2 = userInput2.getText().toString();
                 String userInputText3 = userInput3.getText().toString();
+
                 Task task = Task.builder()
                         .title(userInputText)
                         .body(userInputText2)
@@ -88,14 +97,7 @@ public class AddTaskActivity2 extends AppCompatActivity {
 
             }
         });
-        Button addFile = findViewById(R.id.button5);
-        addFile.setOnClickListener(v -> {
-            uploadFile = new Intent(Intent.ACTION_GET_CONTENT);
-            uploadFile.setType("*/*");
-            uploadFile = Intent.createChooser(uploadFile, "Choose a file");
-            startActivityForResult(uploadFile, 1234);
 
-        });
 
     }
     @Override

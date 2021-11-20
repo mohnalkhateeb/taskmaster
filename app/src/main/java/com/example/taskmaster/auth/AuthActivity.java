@@ -1,5 +1,7 @@
 package com.example.taskmaster.auth;
 
+import static com.example.taskmaster.MainActivity.getPinpointManager;
+
 import android.os.Bundle;
 import android.util.Log;
 
@@ -39,9 +41,11 @@ public class AuthActivity extends AppCompatActivity {
     private void configureAWS() {
         try {
 //            Amplify.addPlugin(new AWSDataStorePlugin());
+
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.addPlugin(new AWSS3StoragePlugin());
+//            getPinpointManager(getApplicationContext());
             Amplify.configure(getApplicationContext());
 
             Log.i("Tutorial", "Initialized Amplify");

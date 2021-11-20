@@ -14,6 +14,13 @@
     "categories": {
       "auth": {
         "taskmaster61ac0848": {}
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Name": "taskmasterIDupw-dev",
+          "Id": "82daa80aac4148db9672f8904b2a6262",
+          "Region": "eu-central-1"
+        }
       }
     }
   }

@@ -2,11 +2,15 @@ package com.example.taskmaster.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.example.taskmaster.PushListenerService;
 import com.example.taskmaster.R;
 import com.example.taskmaster.auth.AuthActivity;
 
@@ -24,4 +28,5 @@ public class SplashActivity2 extends AppCompatActivity {
             finish();
         }, 3000); // pause the launch of the dashboard for 3 seconds
     }
+    
 }

@@ -30,6 +30,10 @@ import com.amazonaws.mobileconnectors.pinpoint.targeting.TargetingClient;
 import com.amazonaws.mobileconnectors.pinpoint.targeting.endpointProfile.EndpointProfile;
 import com.amazonaws.mobileconnectors.pinpoint.targeting.endpointProfile.EndpointProfileUser;
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.analytics.AnalyticsEvent;
+import com.amplifyframework.analytics.AnalyticsProperties;
+import com.amplifyframework.analytics.UserProfile;
+import com.amplifyframework.analytics.pinpoint.models.AWSPinpointUserProfile;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.auth.AuthUser;
@@ -38,7 +42,9 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.example.taskmaster.auth.AuthActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.LinkedList;
@@ -51,7 +57,7 @@ public static final String TAG = MainActivity.class.getSimpleName();
     private List<Task> tasks;
 
     private static PinpointManager pinpointManager;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     public static PinpointManager getPinpointManager(final Context applicationContext) {
         FirebaseApp.initializeApp(applicationContext);
         if (pinpointManager == null) {
@@ -97,7 +103,7 @@ public static final String TAG = MainActivity.class.getSimpleName();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        configureAmplify();
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         getPinpointManager(getApplicationContext());
         assignUserIdToEndpoint();
         userSession();
@@ -246,7 +252,27 @@ public static final String TAG = MainActivity.class.getSimpleName();
         textView.setText("WELCOME");
         textView.setVisibility(View.VISIBLE);
 
+            recordAddObservationButtonTap();
+        AnalyticsProperties customProperties = AnalyticsProperties.builder()
+                .add("property1", "Property value")
+                .build();
 
+        AnalyticsProperties userAttributes = AnalyticsProperties.builder()
+                .add("someUserAttribute", "User attribute value")
+                .build();
+
+        AWSPinpointUserProfile profile = AWSPinpointUserProfile.builder()
+                .name("test-user")
+                .email("user@test.com")
+                .plan("test-plan")
+                .customProperties(customProperties)
+                .userAttributes(userAttributes)
+                .build();
+
+        String userId = Amplify.Auth.getCurrentUser().getUserId();
+
+        Amplify.Analytics.identifyUser(userId, profile);
+        firebaseLogEvent();
 
     }
 //******************
@@ -339,6 +365,57 @@ public static final String TAG = MainActivity.class.getSimpleName();
         targetingClient.updateEndpointProfile(endpointProfile);
         Log.d(TAG, "Assigned user ID " + endpointProfileUser.getUserId() +
                 " to endpoint " + endpointProfile.getEndpointId());
+    }
+
+
+    private void recordAddObservationButtonTap() {
+        AnalyticsEvent event = AnalyticsEvent.builder()
+                .name("Add Observation Button Pressed")
+                .addProperty("Successful", true)
+                .build();
+
+        Amplify.Analytics.recordEvent(event);
+    }
+//
+//    private void recordUser() {
+//        UserProfile.Location location = UserProfile.Location.builder()
+//                .latitude(31.89810424121091)
+//                .longitude(35.86877187676645)
+//                .postalCode("98122")
+//                .city("Amman")
+//                .region("Marj Al Hamam")
+//                .country("Jordan")
+//                .build();
+//
+//        AnalyticsProperties customProperties = AnalyticsProperties.builder()
+//                .add("property1", "Property value")
+//                .build();
+//
+//        AnalyticsProperties userAttributes = AnalyticsProperties.builder()
+//                .add("someUserAttribute", "User attribute value")
+//                .build();
+//
+//        AWSPinpointUserProfile profile = AWSPinpointUserProfile.builder()
+//                .name("test-user")
+//                .email("user@test.com")
+//                .plan("test-plan")
+//                .location(location)
+//                .customProperties(customProperties)
+//                .userAttributes(userAttributes)
+//                .build();
+//
+//        String userId = Amplify.Auth.getCurrentUser().getUserId();
+//
+//        Amplify.Analytics.identifyUser(userId, profile);
+//    }
+//
+    private void firebaseLogEvent() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "FAB");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Button Press");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
 

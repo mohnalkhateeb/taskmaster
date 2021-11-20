@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 public class PushListenerService extends FirebaseMessagingService {
+    public static final String CHANNEL_ID = "CHANNEL_ID";
 
     @Override
     public void onNewToken(@NonNull @NotNull String s) {

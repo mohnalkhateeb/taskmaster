@@ -1,6 +1,7 @@
 type Task @model {
     id: ID!
-    title: String!
-    body: String!
-    state:String!
+    title : String!
+    body : String!
+    state : String!
+    file : String!
 }

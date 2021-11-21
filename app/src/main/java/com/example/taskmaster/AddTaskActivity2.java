@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
@@ -31,6 +32,24 @@ public class AddTaskActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+
+
+        //reference - below intent for image adding is from android documents - https://developer.android.com/reference/android/content/Intent#ACTION_SENDTO
+
+        if (intent.getType() != null && intent.getType().contains("image/")) {
+
+            Uri newImage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+            if(newImage != null){
+                ImageView imageView = findViewById(R.id.addTaskImage);
+                imageView.setImageURI(newImage);
+
+            }
+
+        }
         setContentView(R.layout.activity_add_task2);
         Button button3 = findViewById(R.id.button3);
         Button addFile = findViewById(R.id.button5);

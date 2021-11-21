@@ -308,6 +308,7 @@ public static final String TAG = MainActivity.class.getSimpleName();
         Intent taskDetailsIntent = new Intent(this, TaskDetailActivity.class);
         taskDetailsIntent.putExtra("task", task.getTitle());
         taskDetailsIntent.putExtra("taskInfo", task.getBody()+" "+task.getState());
+//        taskDetailsIntent.putExtra("taskImage", task.)
         MainActivity.this.startActivity(taskDetailsIntent);
     }
     private void renderRecyclerViewFromDatabase() {

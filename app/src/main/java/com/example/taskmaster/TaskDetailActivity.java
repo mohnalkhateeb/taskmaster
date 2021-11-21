@@ -46,7 +46,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                     error -> Log.e("MyAmplifyApp", "Download Failure", error)
             );
         }
-
+        storeImg.setVisibility(View.VISIBLE);
         Button goHomeButtonDetail = findViewById(R.id.button6);
         goHomeButtonDetail.setOnClickListener(new View.OnClickListener() {
             @Override

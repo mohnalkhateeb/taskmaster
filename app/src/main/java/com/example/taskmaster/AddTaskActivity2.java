@@ -32,25 +32,23 @@ public class AddTaskActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_task2);
 
         Intent intent = getIntent();
-        Uri data = intent.getData();
+        String action = intent.getAction();
+        String type = intent.getType();
+        ImageView image = findViewById(R.id.imageView2);
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                if (imageUri != null) {
+                    image.setImageURI(imageUri);
+                    image.setVisibility(View.VISIBLE);
 
-
-        //reference - below intent for image adding is from android documents - https://developer.android.com/reference/android/content/Intent#ACTION_SENDTO
-
-        if (intent.getType() != null && intent.getType().contains("image/")) {
-
-            Uri newImage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-
-            if(newImage != null){
-                ImageView imageView = findViewById(R.id.addTaskImage);
-                imageView.setImageURI(newImage);
-
+                }
             }
-
         }
-        setContentView(R.layout.activity_add_task2);
+
         Button button3 = findViewById(R.id.button3);
         Button addFile = findViewById(R.id.button5);
         addFile.setOnClickListener(v -> {
@@ -126,4 +124,7 @@ public class AddTaskActivity2 extends AppCompatActivity {
         imgName = file.getName();
         imgData = data.getData();
     }
+
+
+
 }

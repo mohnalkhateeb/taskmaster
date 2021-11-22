@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,26 +20,96 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.Callback;
+import com.amazonaws.mobile.client.UserStateDetails;
+import com.amazonaws.mobile.config.AWSConfiguration;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
+import com.amazonaws.mobileconnectors.pinpoint.targeting.TargetingClient;
+import com.amazonaws.mobileconnectors.pinpoint.targeting.endpointProfile.EndpointProfile;
+import com.amazonaws.mobileconnectors.pinpoint.targeting.endpointProfile.EndpointProfileUser;
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.analytics.AnalyticsEvent;
+import com.amplifyframework.analytics.AnalyticsProperties;
+import com.amplifyframework.analytics.UserProfile;
+import com.amplifyframework.analytics.pinpoint.models.AWSPinpointUserProfile;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.example.taskmaster.auth.AuthActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksRecyclerViewAdapter.OnTaskSelectedListener{
 
-    private static final String TAG = "MainActivity";
+//    private static final String TAG = "MainActivity";
+public static final String TAG = MainActivity.class.getSimpleName();
     private List<Task> tasks;
+
+    private static PinpointManager pinpointManager;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    public static PinpointManager getPinpointManager(final Context applicationContext) {
+        FirebaseApp.initializeApp(applicationContext);
+        if (pinpointManager == null) {
+            final AWSConfiguration awsConfig = new AWSConfiguration(applicationContext);
+            AWSMobileClient.getInstance().initialize(applicationContext, awsConfig, new Callback<UserStateDetails>() {
+                @Override
+                public void onResult(UserStateDetails userStateDetails) {
+                    Log.i("INIT", userStateDetails.getUserState().toString());
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("INIT", "Initialization error.", e);
+                }
+            });
+
+            PinpointConfiguration pinpointConfig = new PinpointConfiguration(
+                    applicationContext,
+                    AWSMobileClient.getInstance(),
+                    awsConfig);
+
+            pinpointManager = new PinpointManager(pinpointConfig);
+
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull com.google.android.gms.tasks.Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                return;
+                            }
+                            final String token = task.getResult();
+                            Log.d(TAG, "Registering push notifications token: " + token);
+                            pinpointManager.getNotificationClient().registerDeviceToken(token);
+                        }
+                    });
+        }
+        return pinpointManager;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        configureAmplify();
+//        configureAmplify();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        getPinpointManager(getApplicationContext());
+        assignUserIdToEndpoint();
+        userSession();
         this.renderRecyclerViewFromDatabase();
         Button button1 = findViewById(R.id.button);
+
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +179,30 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
                 MainActivity.this.startActivity(sentToSettings);
             }
         });
+        Button signoutButton = findViewById(R.id.signoutButton);
+        signoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+
+                userSession();
+                Amplify.Auth.signOut(
+                        () -> Log.i("AuthQuickstart", "Signed out successfully"),
+                        error -> Log.e("AuthQuickstart", error.toString())
+
+                );
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        recreate();
+                    }
+                }, 1500);
+
+                Intent signOut = new Intent(MainActivity.this, AuthActivity.class);
+                MainActivity.this.startActivity(signOut);
+            }
+        });
 
         Task taskA = new Task("Eating", "HUMMMM", "IN_PROGRESS");
         Task taskB = new Task("Grade labs", "By 10:00pm", "NEW");
@@ -131,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
                 return false;
             }
         });
+
         Amplify.API.query(
                 ModelQuery.list(com.amplifyframework.datastore.generated.model.Task.class),
                 response -> {
@@ -142,6 +238,9 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
                     handler.sendEmptyMessage(1);
                 },
                 error -> Log.e("MyAmplifyApp", "Query failure", error));
+
+
+
     }
     @Override
     public void onStart(){
@@ -153,11 +252,30 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         textView.setText("WELCOME");
         textView.setVisibility(View.VISIBLE);
 
+            recordAddObservationButtonTap();
+        AnalyticsProperties customProperties = AnalyticsProperties.builder()
+                .add("property1", "Property value")
+                .build();
 
+        AnalyticsProperties userAttributes = AnalyticsProperties.builder()
+                .add("someUserAttribute", "User attribute value")
+                .build();
+
+        AWSPinpointUserProfile profile = AWSPinpointUserProfile.builder()
+                .name("test-user")
+                .email("user@test.com")
+                .plan("test-plan")
+                .customProperties(customProperties)
+                .userAttributes(userAttributes)
+                .build();
+
+        String userId = Amplify.Auth.getCurrentUser().getUserId();
+
+        Amplify.Analytics.identifyUser(userId, profile);
+        firebaseLogEvent();
 
     }
-
-
+//******************
     @Override
     public void onResume(){
         super.onResume();
@@ -173,6 +291,16 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         textView.setVisibility(View.VISIBLE);
 
         this.renderRecyclerViewFromDatabase();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AuthUser authUser = Amplify.Auth.getCurrentUser();
+                if (authUser != null) textView.setText(authUser.getUsername()+ "'s Task List");
+
+            }
+        }, 2000);
     }
     @Override
     public void onTaskSelected(Task task) {
@@ -180,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         Intent taskDetailsIntent = new Intent(this, TaskDetailActivity.class);
         taskDetailsIntent.putExtra("task", task.getTitle());
         taskDetailsIntent.putExtra("taskInfo", task.getBody()+" "+task.getState());
+//        taskDetailsIntent.putExtra("taskImage", task.)
         MainActivity.this.startActivity(taskDetailsIntent);
     }
     private void renderRecyclerViewFromDatabase() {
@@ -198,6 +327,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
     }
     private void configureAmplify() {
         try {
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.addPlugin(new AWSDataStorePlugin()); // stores records locally
             Amplify.addPlugin(new AWSApiPlugin()); // stores things in DynamoDB and allows us to perform GraphQL queries
             Amplify.configure(getApplicationContext());
@@ -207,5 +337,87 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
             Log.e(TAG, "Could not initialize Amplify", error);
         }
     }
+
+    private void userSession() {
+        Amplify.Auth.fetchUserAttributes(
+                attributes -> Log.i(TAG, "User attributes = " + attributes.toString()),
+                error -> Log.e(TAG, "Failed to fetch user attributes.", error)
+        );
+
+        Amplify.Auth.fetchAuthSession(
+                result -> {
+                    Log.i(TAG, result.toString());
+                },
+                error -> Log.e(TAG, error.toString())
+        );
+
+        Amplify.Auth.signInWithWebUI(
+                this,
+                result -> Log.i("AuthQuickStart", result.toString()),
+                error -> Log.e("AuthQuickStart", error.toString())
+        );
+    }
+    public void assignUserIdToEndpoint() {
+        TargetingClient targetingClient = pinpointManager.getTargetingClient();
+        EndpointProfile endpointProfile = targetingClient.currentEndpoint();
+        EndpointProfileUser endpointProfileUser = new EndpointProfileUser();
+        endpointProfileUser.setUserId("UserIdValue");
+        endpointProfile.setUser(endpointProfileUser);
+        targetingClient.updateEndpointProfile(endpointProfile);
+        Log.d(TAG, "Assigned user ID " + endpointProfileUser.getUserId() +
+                " to endpoint " + endpointProfile.getEndpointId());
+    }
+
+
+    private void recordAddObservationButtonTap() {
+        AnalyticsEvent event = AnalyticsEvent.builder()
+                .name("Add Observation Button Pressed")
+                .addProperty("Successful", true)
+                .build();
+
+        Amplify.Analytics.recordEvent(event);
+    }
+//
+//    private void recordUser() {
+//        UserProfile.Location location = UserProfile.Location.builder()
+//                .latitude(31.89810424121091)
+//                .longitude(35.86877187676645)
+//                .postalCode("98122")
+//                .city("Amman")
+//                .region("Marj Al Hamam")
+//                .country("Jordan")
+//                .build();
+//
+//        AnalyticsProperties customProperties = AnalyticsProperties.builder()
+//                .add("property1", "Property value")
+//                .build();
+//
+//        AnalyticsProperties userAttributes = AnalyticsProperties.builder()
+//                .add("someUserAttribute", "User attribute value")
+//                .build();
+//
+//        AWSPinpointUserProfile profile = AWSPinpointUserProfile.builder()
+//                .name("test-user")
+//                .email("user@test.com")
+//                .plan("test-plan")
+//                .location(location)
+//                .customProperties(customProperties)
+//                .userAttributes(userAttributes)
+//                .build();
+//
+//        String userId = Amplify.Auth.getCurrentUser().getUserId();
+//
+//        Amplify.Analytics.identifyUser(userId, profile);
+//    }
+//
+    private void firebaseLogEvent() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "FAB");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Button Press");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
 
 }
